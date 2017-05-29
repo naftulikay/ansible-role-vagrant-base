@@ -1,0 +1,19 @@
+---
+# allow a user to change the shared folder
+vagrant_shared_folder: /vagrant
+# allow a user to change the default shell on the account
+vagrant_shell: /bin/bash
+# allow a user to change the name of the vagrant user
+vagrant_user: vagrant
+
+shells:
+  sh:
+    profile: .profile
+
+  bash:
+    rc: .bashrc
+    profile: .bash_profile
+
+  zsh:
+    rc: .zshrc
+    profile: .zprofile

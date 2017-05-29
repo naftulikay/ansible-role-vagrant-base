@@ -1,0 +1,52 @@
+---
+# load variables per distro/version
+- name: load per-distribution variables
+  include_vars: "{{ ansible_distribution | lower }}/{{ ansible_distribution_version.split('.') | first | lower }}.yml"
+
+# determine user's home directory
+- name: detect vagrant user home
+  shell: echo $HOME
+  register: vagrant_home_result
+  become: true
+  become_user: "{{ vagrant_user }}"
+  become_flags: -Hi
+  changed_when: false
+
+# determine user's shell
+- name: detect vagrant user shell
+  shell: echo $SHELL
+  register: vagrant_shell_result
+  become: true
+  become_user: "{{ vagrant_user }}"
+  become_flags: -Hi
+  changed_when: false
+
+# set user's shell if that's what they want
+- name: update user
+  user: name={{ vagrant_user }} shell={{ vagrant_shell }}
+
+- name: set detected facts
+  set_fact:
+    vagrant_user_shell: "{{ vagrant_shell_result.stdout_lines | first | trim }}"
+    vagrant_user_home: "{{ vagrant_home_result.stdout_lines | first | trim }}"
+
+# install user shell
+- name: install user shell
+  package: name={{ packages.shell[vagrant_user_shell.split('/')[-1]] }} state=present
+  when: vagrant_shell != vagrant_user_shell
+
+# install utility packages
+- name: install utility packages
+  package: name={{ item }} state=present
+  with_items:
+    - "{{ packages.bash_completion }}"
+    - "{{ packages.man_pages }}"
+    - "{{ packages.vim }}"
+
+# shell configuration discovery
+- name: discover shell configuration
+  include: shell/{{ vagrant_shell.split('/')[-1] }}.yml
+
+# configure completions
+- name: configure shell completions
+  include: completions.yml

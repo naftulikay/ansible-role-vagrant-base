@@ -1,0 +1,7 @@
+---
+packages:
+  bash: bash
+  zsh: zsh
+  bash_completion: bash-completion
+  man_pages: man-pages
+  vim: vim-enhanced

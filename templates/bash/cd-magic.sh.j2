@@ -1,0 +1,4 @@
+if [ $(history | wc -l) -eq 0 ]; then
+  # we've just shelled in; "magically" cd into the vagrant shared folder
+  cd "{{ vagrant_shared_folder }}"
+fi
