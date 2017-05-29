@@ -19,59 +19,16 @@
   hosts: localhost
   vars:
     vagrant_shell: bash
+    bash_path: /usr/bin/bash
+    zsh_path: /usr/bin/zsh
   roles:
     - role: degoss
-      goss_file: goss/goss.yml
-      goss_addtl_dirs: [goss/includes/]
+      degoss_debug: true
+      goss_file: goss.yml
+      goss_addtl_dirs: [goss.d/]
       goss_env_vars:
         distro: "{{ ansible_distribution | lower }}"
         shell: "{{ vagrant_shell }}"
-        selinux: "{{ ansible_selinux and ansible_selinux.status == 'enabled' }}"
-
+        init: |-
+          {% if ansible_service_mgr == "systemd" %}systemd{% else %}other{% endif %}
       when: idempotence_test is undefined
-
-- name: display
-  hosts: localhost
-  vars:
-    container_user: vagrant
-  tasks:
-    - name: detect bash
-      command: which bash
-      register: bash
-      changed_when: false
-
-    - name: detect zsh
-      command: which zsh
-      register: zsh
-      changed_when: false
-      failed_when: false
-
-    - name: get bash environment
-      shell: env
-      args:
-        executable: "bash"
-      become: true
-      become_user: "{{ container_user }}"
-      become_flags: -i
-      changed_when: false
-      failed_when: false
-      register: bash_env
-
-    - name: get zsh environment
-      shell: env
-      args:
-        executable: "zsh"
-      become: true
-      become_user: "{{ container_user }}"
-      become_flags: -i
-      changed_when: false
-      failed_when: false
-      register: zsh_env
-
-    - name: display bash environment
-      debug:
-        msg: "Bash Environment: {{ bash_env.get('stdout', '') | default('undefined', true) }}"
-
-    - name: display zsh environment
-      debug:
-        msg: "Zsh Environment: {{ zsh_env.get('stdout', '') | default('undefined', true) }}"

@@ -2,4 +2,4 @@
 # install utility packages
 - name: install utility packages
   package: name={{ item }} state=present
-  with_items: "{{ vagrant_utility_packages.values() }}"
+  with_items: "{{ vagrant_utility_packages }}"

@@ -6,8 +6,7 @@ vagrant_shell: bash
 # allow a user to change the name of the vagrant user
 vagrant_user: vagrant
 
-fallback_ntp_servers:
-  - 0.pool.ntp.org
-  - 1.pool.ntp.org
-  - 2.pool.ntp.org
-  - 3.pool.ntp.org
+vagrant_bash_package: bash
+vagrant_zsh_package: zsh
+
+vagrant_utility_packages: []
