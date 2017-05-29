@@ -1,1 +1,12 @@
 ---
+- name: establish file to modify
+  set_fact:
+    shell_config_file: |-
+      {{ vagrant_user_home }}/.zshrc
+    shell_magic_template: |-
+      {{ lookup('template', "cd-magic.sh.j2") }}
+    shebang: "#!/usr/bin/env zsh"
+    shebang_matcher: |-
+      ^\#\!/usr/bin/env\s+(zsh).*$
+    shebang_repl_matcher: |-
+      ^\#\!(?:/usr)?/bin/zsh\s*.*$

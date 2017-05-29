@@ -1,19 +1,13 @@
 ---
 # allow a user to change the shared folder
 vagrant_shared_folder: /vagrant
-# allow a user to change the default shell on the account
-vagrant_shell: /bin/bash
+# allow a user to change the default shell on the account, should be either bash or zsh
+vagrant_shell: bash
 # allow a user to change the name of the vagrant user
 vagrant_user: vagrant
 
-shells:
-  sh:
-    profile: .profile
-
-  bash:
-    rc: .bashrc
-    profile: .bash_profile
-
-  zsh:
-    rc: .zshrc
-    profile: .zprofile
+fallback_ntp_servers:
+  - 0.pool.ntp.org
+  - 1.pool.ntp.org
+  - 2.pool.ntp.org
+  - 3.pool.ntp.org

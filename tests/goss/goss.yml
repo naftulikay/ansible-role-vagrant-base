@@ -1,0 +1,8 @@
+---
+gossfile:
+  'includes/common.yml': {}
+{{ if eq .Env.selinux "true" }}
+  'includes/selinux.yml': {}
+{{ end }}
+  'includes/packages-{{.Env.distro}}.yml': {}
+  'includes/shell-{{.Env.shell}}.yml': {}

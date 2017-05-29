@@ -1,52 +1,37 @@
 ---
 # load variables per distro/version
 - name: load per-distribution variables
-  include_vars: "{{ ansible_distribution | lower }}/{{ ansible_distribution_version.split('.') | first | lower }}.yml"
+  include_vars: "{{ per_distro_vars }}"
+  with_items:
+    - "distro/{{ ansible_distribution | lower }}/common.yml"
+    - "distro/{{ ansible_distribution | lower }}/{{ ansible_distribution | lower }}{{ ansible_distribution_version.split('.') | first | lower }}.yml"
+  loop_control: { loop_var: per_distro_vars }
 
-# determine user's home directory
-- name: detect vagrant user home
-  shell: echo $HOME
-  register: vagrant_home_result
-  become: true
-  become_user: "{{ vagrant_user }}"
-  become_flags: -Hi
-  changed_when: false
+# include per-distro tweaks
+- name: include per-distribution tasks
+  include: "{{ per_distro_tasks }}"
+  with_items:
+    - "distro/{{ ansible_distribution | lower }}/common.yml"
+    - "distro/{{ ansible_distribution | lower }}/{{ ansible_distribution | lower }}{{ ansible_distribution_version.split('.') | first | lower }}.yml"
+  loop_control: { loop_var: per_distro_tasks }
 
-# determine user's shell
-- name: detect vagrant user shell
-  shell: echo $SHELL
-  register: vagrant_shell_result
-  become: true
-  become_user: "{{ vagrant_user }}"
-  become_flags: -Hi
-  changed_when: false
-
-# set user's shell if that's what they want
-- name: update user
-  user: name={{ vagrant_user }} shell={{ vagrant_shell }}
-
-- name: set detected facts
-  set_fact:
-    vagrant_user_shell: "{{ vagrant_shell_result.stdout_lines | first | trim }}"
-    vagrant_user_home: "{{ vagrant_home_result.stdout_lines | first | trim }}"
-
-# install user shell
-- name: install user shell
-  package: name={{ packages.shell[vagrant_user_shell.split('/')[-1]] }} state=present
-  when: vagrant_shell != vagrant_user_shell
+# install distro packages
+- name: install distribution specific packages
+  package: name={{ item }} state=present
+  with_items: "{{ distro_packages }}"
+  when: distro_packages is defined and len(distro_packages) > 0
 
 # install utility packages
-- name: install utility packages
-  package: name={{ item }} state=present
-  with_items:
-    - "{{ packages.bash_completion }}"
-    - "{{ packages.man_pages }}"
-    - "{{ packages.vim }}"
+- name: utility packages
+  include: utility-packages.yml
 
-# shell configuration discovery
-- name: discover shell configuration
-  include: shell/{{ vagrant_shell.split('/')[-1] }}.yml
+# configure shell
+- name: configure shell
+  include: shell.yml
 
-# configure completions
-- name: configure shell completions
-  include: completions.yml
+# configure selinux
+- name: configure selinux
+  include: selinux.yml
+  # when on an selinux system and the currently-running kernel has selinux loaded as the mac system (as opposed to
+  # AppArmor, SMACK, etc.)
+  when: ansible_selinux is defined

@@ -1,22 +1,12 @@
 ---
-- name: detect presence of .bashrc
-  stat: path="{{ vagrant_user_home }}/.bashrc"
-  register: stat_bashrc
-  changed_when: false
-
-- name: detect presence of .bash_profile
-  stat: path="{{ vagrant_user_home }}/.bash_profile"
-  register: stat_bash_profile
-  changed_when: false
-
-- name: detect presence of .profile
-  stat: path="{{ vagrant_user_home }}/.profile"
-  register: stat_profile
-  changed_when: false
-
 - name: establish file to modify
   set_fact:
     shell_config_file: |-
-      {{ [stat_bashrc, stat_bash_profile, stat_profile] | selectattr("stat.isreg") | map(attribute='stat.path') | first | trim }}
+      {{ vagrant_user_home }}/.bashrc
     shell_magic_template: |-
-      {{ lookup('template', "{{ vagrant_shell.split('/')[-1] }}/cd-magic.sh.j2") }}
+      {{ lookup('template', "cd-magic.sh.j2") }}
+    shebang: "#!/usr/bin/env bash"
+    shebang_matcher: |-
+      ^\#\!/usr/bin/env\s+(bash).*$
+    shebang_repl_matcher: |-
+      ^\#\!(?:/usr)?/bin/bash\s*.*$

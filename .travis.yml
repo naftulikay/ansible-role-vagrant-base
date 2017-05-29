@@ -10,17 +10,15 @@ services:
 
 env:
   global: # applied to every run
-    - container_env_term: xterm
-    - container_env_lang: en_US.UTF-8
-
-    - container_user: captainamazing
-
-    - go_version: 1.8.3
-
-    - role_name: vagrant-base
+    bash_path: /usr/bin/bash
+    container_env_term: xterm
+    container_env_lang: en_US.UTF-8
+    container_user: vagrant
+    role_name: vagrant-base
+    zsh_path: /usr/bin/zsh
 
   matrix: # each entry is its own run
-    - { image: "naftulikay/centos-vm:7",      systemd: true }
+    - { image: "naftulikay/centos-vm:7", systemd: true }
     - { image: "naftulikay/xenial-vm:latest", systemd: true }
     - { image: "naftulikay/trusty-vm:latest", systemd: false }
 
@@ -38,8 +36,11 @@ install:
   - tests/runc exec ansible-galaxy install -r /etc/ansible/roles/${role_name}/tests/requirements.yml
 
 script:
-  # run ansible in the container
-  - "tests/runc exec ansible-playbook /etc/ansible/roles/${role_name}/tests/playbook.yml"
+  # evaluate defaults
+  - tests/runc exec ansible-playbook /etc/ansible/roles/${role_name}/tests/playbook.yml
+  # evaluate different shell
+  - "tests/runc exec ansible-playbook -e vagrant_shell=zsh -e bash_path=${bash_path} -e zsh_path=${zsh_path} \
+      /etc/ansible/roles/${role_name}/tests/playbook.yml"
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/

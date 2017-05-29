@@ -1,0 +1,26 @@
+---
+package:
+  bash:
+    installed: true
+
+file:
+  # test that the magic exists
+  /home/vagrant/.bashrc:
+    exists: true
+    mode: "0750"
+    owner: vagrant
+    group: vagrant
+    filetype: file
+    contains:
+      - "#!/usr/bin/env bash"
+      - "if [ $(history 2>/dev/null | wc -l) -eq 0 ]; then"
+      - "cd \"/vagrant\""
+
+user:
+  vagrant:
+    exists: true
+    home: /home/vagrant
+    shell:
+      or:
+        - "/bin/bash"
+        - "/usr/bin/bash"
