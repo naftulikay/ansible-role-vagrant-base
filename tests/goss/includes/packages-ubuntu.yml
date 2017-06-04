@@ -1,0 +1,6 @@
+---
+package:
+  manpages:
+    installed: true
+  vim:
+    installed: true

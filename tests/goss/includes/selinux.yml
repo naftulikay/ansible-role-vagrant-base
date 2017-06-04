@@ -1,0 +1,4 @@
+---
+file:
+  '/nonexistent':
+    exists: true

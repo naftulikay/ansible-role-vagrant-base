@@ -1,0 +1,6 @@
+---
+package:
+  bash-completion:
+    installed: true
+  jq:
+    installed: true

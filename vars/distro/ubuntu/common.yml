@@ -1,0 +1,9 @@
+---
+vagrant_utility_packages:
+  bash_completion: bash-completion
+  man_pages: manpages
+  vim: vim
+  jq: jq
+
+vagrant_bash_package: bash
+vagrant_zsh_package: zsh
