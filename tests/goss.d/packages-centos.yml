@@ -1,8 +1,0 @@
----
-package:
-  man-db:
-    installed: true
-  man-pages:
-    installed: true
-  vim-enhanced:
-    installed: true

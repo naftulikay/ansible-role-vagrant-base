@@ -1,6 +1,5 @@
 ---
 package:
-  bash-completion:
-    installed: true
-  jq:
-    installed: true
+  bash-completion: { installed: true }
+  tree: { installed: true }
+  jq: { installed: true }
