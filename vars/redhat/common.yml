@@ -5,4 +5,5 @@ vagrant_utility_packages:
   - libselinux-python
   - man-db
   - man-pages
+  - tree
   - vim-enhanced
