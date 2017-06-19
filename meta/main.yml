@@ -20,4 +20,6 @@ galaxy_info:
   galaxy_tags:
     - vagrant
 
-dependencies: []
+dependencies:
+  - name: time
+    src: naftulikay.time

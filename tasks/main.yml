@@ -1,25 +1,14 @@
 ---
-# load variables per distro/version
-- name: load per-distribution variables
-  include_vars: "{{ per_distro_vars }}"
-  with_items:
-    - "distro/{{ ansible_distribution | lower }}/common.yml"
-    - "distro/{{ ansible_distribution | lower }}/{{ ansible_distribution | lower }}{{ ansible_distribution_version.split('.') | first | lower }}.yml"
-  loop_control: { loop_var: per_distro_vars }
+- name: include os facts
+  include: discover/os.yml
 
-# include per-distro tweaks
-- name: include per-distribution tasks
-  include: "{{ per_distro_tasks }}"
+# load variables per os and release
+- name: load variables
+  include_vars: "{{ vars_list }}"
   with_items:
-    - "distro/{{ ansible_distribution | lower }}/common.yml"
-    - "distro/{{ ansible_distribution | lower }}/{{ ansible_distribution | lower }}{{ ansible_distribution_version.split('.') | first | lower }}.yml"
-  loop_control: { loop_var: per_distro_tasks }
-
-# install distro packages
-- name: install distribution specific packages
-  package: name={{ item }} state=present
-  with_items: "{{ distro_packages }}"
-  when: distro_packages is defined and len(distro_packages) > 0
+    - "{{ os_name }}/common.yml"
+    - "{{ os_name }}/{{ os_release }}.yml"
+  loop_control: { loop_var: vars_list }
 
 # install utility packages
 - name: utility packages
@@ -28,10 +17,3 @@
 # configure shell
 - name: configure shell
   include: shell.yml
-
-# configure selinux
-- name: configure selinux
-  include: selinux.yml
-  # when on an selinux system and the currently-running kernel has selinux loaded as the mac system (as opposed to
-  # AppArmor, SMACK, etc.)
-  when: ansible_selinux is defined

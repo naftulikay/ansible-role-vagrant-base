@@ -28,7 +28,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # allow passing ansible args from environment variable
     ansible.raw_arguments = Shellwords::shellwords(ENV.fetch("ANSIBLE_ARGS", ""))
 
-    ansible.provisioning_path = "/vagrant/"
+    ansible.provisioning_path = "/vagrant"
     ansible.playbook = "vagrant.yml"
+    ansible.galaxy_role_file = "requirements.yml"
+    ansible.galaxy_roles_path = "roles"
   end
 end

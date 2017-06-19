@@ -1,0 +1,8 @@
+---
+vagrant_utility_packages:
+  - bash-completion
+  - jq
+  - libselinux-python
+  - man-db
+  - man-pages
+  - vim-enhanced

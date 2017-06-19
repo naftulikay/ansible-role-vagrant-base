@@ -1,0 +1,5 @@
+---
+gossfile:
+  'goss.d/common.yml': {}
+  'goss.d/packages-{{.Env.distro}}.yml': {}
+  'goss.d/shell-{{.Env.shell}}.yml': {}
