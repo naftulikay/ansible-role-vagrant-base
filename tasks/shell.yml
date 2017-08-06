@@ -64,6 +64,7 @@
 # magic cd to /vagrant on login
 - name: insert magic cd
   blockinfile:
+    marker: "# {mark} ansible: naftulikay.vagrant-base"
     path: "{{ shell_config_file }}"
     owner: "{{ vagrant_user }}"
     group: "{{ vagrant_user }}"
