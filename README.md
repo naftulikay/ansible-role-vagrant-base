@@ -13,6 +13,8 @@ RHEL 7, Ubuntu 16.04, or Ubuntu 14.04.
 <dl>
  <dt><code>vagrant_user</code></dt>
  <dd>The vagrant user, by default <code>vagrant</code>.</dd>
+ <dt><code>vagrant_init_dir</code></dt>
+ <dd>The directory to automatically change into during login. Defaults to <code>/vagrant</code>.</dd>
 </dl>
 
 ## Dependencies
