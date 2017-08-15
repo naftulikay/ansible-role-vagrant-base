@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   name: vagrant-base
-  version: 'v1.0.2'
+  version: 'v1.1.0'
   author: Naftuli Kay
   description: Configure bare minimums and niceties on Vagrant machines.
 
