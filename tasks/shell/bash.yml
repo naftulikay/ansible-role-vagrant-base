@@ -2,11 +2,4 @@
 - name: establish file to modify
   set_fact:
     shell_config_file: |-
-      {{ vagrant_user_home }}/.bashrc
-    shell_magic_template: |-
-      {{ lookup('template', "cd-magic.sh.j2") }}
-    shebang: "#!/usr/bin/env bash"
-    shebang_matcher: |-
-      ^\#\!/usr/bin/env\s+(bash).*$
-    shebang_repl_matcher: |-
-      ^\#\!(?:/usr)?/bin/bash\s*.*$
+      /etc/profile.d/vagrant-magic.sh

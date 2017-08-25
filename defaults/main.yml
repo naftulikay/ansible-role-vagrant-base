@@ -1,1 +1,14 @@
 ---
+# allow a user to change the shared folder
+vagrant_shared_folder: /vagrant
+# allow a user to change the default shell on the account, should be either bash or zsh
+vagrant_shell: bash
+# allow a user to change the name of the vagrant user
+vagrant_user: vagrant
+
+vagrant_init_dir: "{{ vagrant_shared_folder }}"
+
+vagrant_bash_package: bash
+vagrant_zsh_package: zsh
+
+vagrant_utility_packages: []
