@@ -58,40 +58,16 @@
 
 # when unable to find a shell configuration file or a shell template, fail
 - name: fail when shell config file or shell template is undefined
-  fail: msg="Shell configuration file and/or shell magic template are undefined."
-  when: shell_config_file is undefined or shell_magic_template is undefined
+  fail: msg="Shell configuration file is undefined."
+  when: shell_config_file is not defined
 
 # magic cd to /vagrant on login
 - name: insert magic cd
-  blockinfile:
-    marker: "# {mark} ansible: naftulikay.vagrant-base"
-    path: "{{ shell_config_file }}"
-    owner: "{{ vagrant_user }}"
-    group: "{{ vagrant_user }}"
-    mode: "0750"
-    block: "{{ shell_magic_template }}"
-    create: true
+  template:
+    src: vagrant-magic.sh.j2
+    dest: "{{ shell_config_file }}"
+    owner: root
+    group: root
+    mode: "0755"
   become: true
-  become_user: "{{ vagrant_user }}"
-  when: shell_config_file is defined and shell_magic_template is defined
-
-# fix shell shebang; might not do anything
-- name: replace shebang
-  replace:
-    path: "{{ shell_config_file }}"
-    owner: "{{ vagrant_user }}"
-    group: "{{ vagrant_user }}"
-    mode: "0750"
-    regexp: "{{ shebang_repl_matcher }}"
-    replace: "{{ shebang }}"
-
-# insert shebang unless present
-- name: insert shebang
-  lineinfile:
-    path: "{{ shell_config_file }}"
-    insertbefore: BOF
-    line: "{{ shebang }}"
-    regexp: "{{ shebang_matcher }}"
-    owner: "{{ vagrant_user }}"
-    group: "{{ vagrant_user }}"
-    mode: "0750"
+  when: shell_config_file is defined

@@ -5,14 +5,13 @@ package:
 
 file:
   # test that the magic exists
-  /home/vagrant/.zshrc:
+  /etc/profile.d/vagrant-magic.sh:
     exists: true
-    mode: "0750"
+    mode: "0755"
     owner: vagrant
     group: vagrant
     filetype: file
     contains:
-      - "#!/usr/bin/env zsh"
       - "if [ $(history 2>/dev/null | wc -l) -eq 0 ]; then"
       - "cd \"/vagrant\""
 
