@@ -1,5 +1,6 @@
 ---
 package:
+  epel-release: { installed: true }
   libselinux-python: { installed: true }
   man-db: { installed: true }
   man-pages: { installed: true }

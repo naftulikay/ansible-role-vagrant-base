@@ -7,9 +7,9 @@ file:
   # test that the magic exists
   /etc/profile.d/vagrant-magic.sh:
     exists: true
-    mode: "0755"
-    owner: vagrant
-    group: vagrant
+    mode: "0644"
+    owner: root
+    group: root
     filetype: file
     contains:
       - "if [ $(history 2>/dev/null | wc -l) -eq 0 ]; then"
@@ -19,7 +19,4 @@ user:
   vagrant:
     exists: true
     home: /home/vagrant
-    shell:
-      or:
-        - "/bin/bash"
-        - "/usr/bin/bash"
+    shell: /bin/bash
