@@ -1,5 +1,0 @@
----
-- name: establish file to modify
-  set_fact:
-    shell_config_file: |-
-      /etc/profile.d/vagrant-magic.sh
