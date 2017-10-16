@@ -23,13 +23,13 @@
 # update cache on ubuntu
 - name: update cache
   apt: update_cache=yes cache_valid_time=2700
-  when: ansible_distribution|lower == "ubuntu"
+  when: os_name == "ubuntu"
   become: true
 
 # install epel on redhat
 - name: install epel
   package: name=epel-release state=present
-  when: ansible_distribution|lower == "redhat"
+  when: os_name == "redhat"
   become: true
 
 # install utility packages
