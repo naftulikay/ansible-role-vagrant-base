@@ -1,7 +1,7 @@
 ---
 # load variables per os and release
 - name: include os facts
-  include: discover/os.yml
+  include_tasks: discover/os.yml
 
 - name: load variables
   include_vars: "{{ vars_list }}"

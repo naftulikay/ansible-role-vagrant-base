@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
-# -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+require 'etc'
 require 'shellwords'
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
@@ -19,15 +19,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Tweak the VMs configuration.
   config.vm.provider "virtualbox" do |vb|
+    vb.cpus = Etc.nprocessors
     vb.memory = 1024
     vb.linked_clone = true
   end
 
   # Configure the VM using Ansible
   config.vm.provision "ansible_local" do |ansible|
-    ansible.config_file = "/vagrant/ansible.cfg"
     ansible.galaxy_role_file = "requirements.yml"
-    ansible.galaxy_roles_path = "galaxy_roles"
+    ansible.galaxy_roles_path = ".ansible/galaxy-roles"
     ansible.provisioning_path = "/vagrant"
     ansible.playbook = "vagrant.yml"
     # allow passing ansible args from environment variable
