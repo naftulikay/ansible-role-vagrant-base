@@ -1,4 +1,7 @@
 ---
-# allow a user to change the shared folder
+# allow a user to change the shared folder location
 vagrant_shared_folder: /vagrant
+# allow a user to change where the initial cd on login points to
+vagrant_init_dir: "{{ vagrant_shared_folder }}"
+# additional utility packages
 vagrant_utility_packages: []
