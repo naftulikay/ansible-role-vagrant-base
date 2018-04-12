@@ -1,14 +1,23 @@
 ---
-# load variables per os and release
-- name: include os facts
-  include_tasks: discover/os.yml
+- name: include ubuntu variables
+  include_vars: ubuntu/common.yml
+  when: is_ubuntu_derivative
 
-- name: load variables
+- name: include trusty variables
+  include_vars: ubuntu/trusty.yml
+  when: is_ubuntu_trusty_derivative
+
+- name: include xenial variables
+  include_vars: ubuntu/xenial.yml
+  when: is_ubuntu_xenial_derivative
+
+- name: include redhat variables
   include_vars: "{{ vars_list }}"
   with_items:
-    - "{{ os_name }}/common.yml"
-    - "{{ os_name }}/{{ os_release }}.yml"
+    - redhat/common.yml
+    - redhat/rhel7.yml
   loop_control: { loop_var: vars_list }
+  when: is_redhat_derivative
 
 # create magic cd to /vagrant on login
 - name: insert magic cd
@@ -23,13 +32,13 @@
 # update cache on ubuntu
 - name: update cache
   apt: update_cache=yes cache_valid_time=2700
-  when: os_name == "ubuntu"
+  when: is_ubuntu_derivative
   become: true
 
 # install epel on redhat
 - name: install epel
   package: name=epel-release state=present
-  when: os_name == "redhat"
+  when: is_redhat_derivative
   become: true
 
 # install utility packages

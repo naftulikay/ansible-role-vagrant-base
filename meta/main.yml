@@ -21,4 +21,5 @@ galaxy_info:
     - vagrant
 
 dependencies:
+  - src: naftulikay.base
   - src: naftulikay.time

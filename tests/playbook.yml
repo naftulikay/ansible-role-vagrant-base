@@ -13,7 +13,7 @@
 - name: execute role
   hosts: localhost
   roles:
-    - role: vagrant-base
+    - role: default
 
 - name: execute tests
   hosts: localhost
