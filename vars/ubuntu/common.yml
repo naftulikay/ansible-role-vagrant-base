@@ -3,5 +3,6 @@ vagrant_utility_packages:
   - bash-completion
   - jq
   - manpages
+  - rsync
   - tree
   - vim

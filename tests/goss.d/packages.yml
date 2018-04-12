@@ -3,4 +3,5 @@
 package:
   bash-completion: { installed: true }
   jq: { installed: true }
+  rsync: { installed: true }
   tree: { installed: true }
